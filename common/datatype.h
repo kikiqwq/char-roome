@@ -53,7 +53,7 @@ struct User {
 
 //登录相关的
 struct  LogRequest {
-    char name[20];
+    char name[30];
     int team;
     char msg[512];
 };
