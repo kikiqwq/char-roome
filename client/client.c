@@ -110,12 +110,13 @@ int main(int argc, char **argv) {
     struct ChatMsg msg;
     while(1) {
         bzero(&msg, sizeof(msg));
+        strcpy(msg.name, request.name);
         msg.type = CHAT_WALL;
         //char buff[512] = {0};
-        printf(RED"\nPlease Input Meassge: \n"NONE);
         scanf("%[^\n]s", msg.msg);
         getchar();
         send(sockfd, (void *)&msg, sizeof(msg), 0);
+        printf(RED"\nPlease Input Meassge: \n"NONE);
     }
     
 
