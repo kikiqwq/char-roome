@@ -8,6 +8,7 @@
 #include "head.h"
 
 extern int sockfd;
+extern int exit_flag;
 
 void * do_recv(void *arg) {
     struct ChatMsg msg;
@@ -19,14 +20,15 @@ void * do_recv(void *arg) {
         }
         if (msg.type & CHAT_WALL) {
             printf(""BLUE"%s"NONE" : %s\n", msg.name, msg.msg);
-        } else if (msg.type && CHAT_MSG) {
+        } else if (msg.type & CHAT_MSG) {
             printf(""RED"%s"NONE" : %s\n", msg.name, msg.msg);
 
-        }  else if (msg.type && CHAT_SYS) {
+        }  else if (msg.type & CHAT_SYS) {
             printf(""YELLOW"%s"NONE" : %s\n", msg.name, msg.msg);
 
-        }  else if (msg.type && CHAT_FIN) {
+        }  else if (msg.type & CHAT_FIN) {
             printf(""L_RED"%s"NONE" : %s\n", msg.name, msg.msg);
+            exit_flag = 1;
             exit(1);
         } 
 

@@ -14,12 +14,14 @@ char name[20] = {0};
 char log_msg[512] = {0};
 char *conf = "./football.conf";
 int sockfd = -1;
+int exit_flag = 0;
 
 void logout(int signum){
     struct ChatMsg msg;
     msg.type = CHAT_FIN;
     send(sockfd, (void *)&msg, sizeof(msg), 0);
     close(sockfd);
+    exit_flag = 1;
     exit(1);
 }
 
@@ -59,7 +61,6 @@ int main(int argc, char **argv) {
     if (!strlen(request.name)) strcpy(request.name, get_conf_value(conf, "NAME"));
     if (!strlen(request.msg)) strcpy(request.msg, get_conf_value(conf, "LOGMSG"));
 
-    printf("%s = %s\n", get_conf_value(conf, "NAME"), request.name);
 
 
     DBG("<"GREEN"Conf Show"NONE"> : server_ip = %s, port = %d, team = %s, name = %s\n%s",\
@@ -108,15 +109,21 @@ int main(int argc, char **argv) {
     signal(SIGINT, logout);
 
     struct ChatMsg msg;
-    while(1) {
+    while(1 && !exit_flag) {
         bzero(&msg, sizeof(msg));
         strcpy(msg.name, request.name);
-        msg.type = CHAT_WALL;
+        printf(RED"\nPlease Input Meassge: \n"NONE);
         //char buff[512] = {0};
         scanf("%[^\n]s", msg.msg);
         getchar();
+        if(msg.msg[0] == '@') {
+            msg.type = CHAT_MSG;
+        } else if(msg.msg[0] == '#'){
+            msg.type = CHAT_FUNC;
+        } else {
+            msg.type = CHAT_WALL;
+        }
         send(sockfd, (void *)&msg, sizeof(msg), 0);
-        printf(RED"\nPlease Input Meassge: \n"NONE);
     }
     
 
