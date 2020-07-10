@@ -7,6 +7,8 @@
 
 #ifndef _HEAD_H
 #define _HEAD_H
+#include <locale.h>
+#include <ncurses.h>
 #include <arpa/inet.h>
 #include <ctype.h>
 #include <dirent.h>
@@ -45,4 +47,6 @@
 #include "sub_reactor.h"
 #include "udp_epoll.h"
 #include "client_recv.h"
+#include "send_chat.h"
+#include "chat_ui.h"
 #endif
