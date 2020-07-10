@@ -15,6 +15,14 @@ char log_msg[512] = {0};
 char *conf = "./football.conf";
 int sockfd = -1;
 
+void logout(int signum){
+    struct ChatMsg msg;
+    msg.type = CHAT_FIN;
+    send(sockfd, (void *)&msg, sizeof(msg), 0);
+    close(sockfd);
+    exit(1);
+}
+
 int main(int argc, char **argv) {
     int opt;
     struct LogRequest request;
@@ -93,16 +101,23 @@ int main(int argc, char **argv) {
     }
 
     DBG(GREEN"Server"NONE" : %s\n", response.msg);
-    printf("such a shit");
 
     connect(sockfd, (struct sockaddr *)&server, len);
+    pthread_t recv_t;
+    pthread_create(&recv_t, NULL, do_recv, NULL );
+    signal(SIGINT, logout);
 
-    char buff[512] = {0};
-    sprintf(buff, "suyelu is always 18 years old.");
-    send(sockfd, buff, strlen(buff), 0);
-    while(recv(sockfd, buff, sizeof(buff), 0) > 0) {
-        DBG(RED"server Info"NONE" : %s", buff);
+    struct ChatMsg msg;
+    while(1) {
+        bzero(&msg, sizeof(msg));
+        msg.type = CHAT_WALL;
+        //char buff[512] = {0};
+        printf(RED"\nPlease Input Meassge: \n"NONE);
+        scanf("%[^\n]s", msg.msg);
+        getchar();
+        send(sockfd, (void *)&msg, sizeof(msg), 0);
     }
+    
 
     return 0;
 }
