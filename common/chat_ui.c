@@ -125,6 +125,6 @@ void show_message(WINDOW *win, struct ChatMsg *msg, int type) {
     int tmp = ((strlen(msg->msg) + 17) / MSG_WIDTH) + 1;
     msgnum += tmp;
     wrefresh(win);
-    wmove(input_win, 2, 1);
+    //wmove(input_win, 2, 1);
     wrefresh(input_win);
 }
