@@ -23,7 +23,7 @@ void * do_recv(void *arg) {
         } else if (msg.type & CHAT_MSG) {
             show_message(message_sub, &msg, 0);
 
-        }  else if (msg.type & CHAT_SYS) {
+        }  else if (msg.type & CHAT_SYS || msg.type & CHAT_FUNC) {
             show_message(message_sub, &msg, 1);
 
         }  else if (msg.type & CHAT_FIN) {

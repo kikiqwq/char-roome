@@ -14,6 +14,8 @@ char *conf = "./football.conf";
 int sockfd = -1;
 WINDOW *message_win, *message_sub,  *info_win, *info_sub, *input_win, *input_sub;
 int msgnum = 0;
+struct LogRequest request;
+struct LogResponse response;
 
 
 void logout(int signum) {
@@ -28,8 +30,6 @@ void logout(int signum) {
 int main(int argc, char **argv) {
     setlocale(LC_ALL,"");
     int opt;
-    struct LogRequest request;
-    struct LogResponse response;
 
     bzero(&request, sizeof(request));
     bzero(&response, sizeof(response));

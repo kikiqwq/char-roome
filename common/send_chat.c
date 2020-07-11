@@ -7,6 +7,7 @@
 #include "head.h"
 extern int sockfd;
 extern WINDOW *input_sub, *input_win, *message_sub;
+extern struct LogRequest request, response;
 
 
 void send_chat() {
@@ -14,6 +15,8 @@ void send_chat() {
     echo();
     nocbreak();
     bzero(&msg, sizeof(msg));
+    strcpy(msg.name, request.name);
+    strcat(msg.name, " : ");
     msg.type = CHAT_WALL;
     w_gotoxy_puts(input_win, 1, 1, "Input Message : ");
     //show_message(message_sub, &msg, 1);
